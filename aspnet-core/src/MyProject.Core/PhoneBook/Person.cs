@@ -1,0 +1,27 @@
+using Abp.Auditing;
+
+namespace MyProject.PhoneBook
+{
+    [Table("pbPersons")]
+    public class Person : FullAditedEntity
+    {
+        public const int MaxNameLength = 32;
+        public const int MaxSurnameLength = 32;
+        public const int MaxEmailAddressLength = 255;
+
+        [Required]
+        [MaxLength(MaxNameLength)]
+        public virtual string Name { get; set; }
+
+        [Required]
+        [MaxLength(MaxSurnameLength)]
+        public virtual string Surname { get; set; }
+
+
+        [Required]
+        [MaxLength(MaxEmailAddressLength)]
+        public virtual string EmailAddress { get; set; }
+
+
+    }
+}
