@@ -1,7 +1,11 @@
-import { Component, OnInit, Injector, Inject, Optional } from '@angular/core';
-import { PersonServiceProxy, PersonListDto, PhoneType, AddPhoneInput } from '@shared/service-proxies/service-proxies';
+import { Component, OnInit, Injector, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
+import * as _ from 'lodash';
+import { finalize } from 'rxjs/operators';
+
 import { AppComponentBase } from '@shared/app-component-base';
+import { PersonServiceProxy, PersonListDto, PhoneType, AddPhoneInput, PhoneInPersonListDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-edit-person-dialog',
@@ -9,6 +13,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 })
 export class EditPersonDialogComponent extends AppComponentBase implements OnInit {
 
+  saving = false;
   newPhone: AddPhoneInput = new AddPhoneInput();
   
   constructor(
@@ -51,6 +56,31 @@ export class EditPersonDialogComponent extends AppComponentBase implements OnIni
         this.notify.success(this.l('SavedSuccessfully'));
       }
     );
+  }
+
+  deletePhone(phone: PhoneInPersonListDto): void {
+    this._personService.deletePhone(phone.id).subscribe(
+      (result) => {
+        this.notify.info(this.l('SuccessfullyDeleted'));
+        _.remove(this.person.phones, phone);
+      }
+    )
+  }
+
+  editPerson() {
+    this.saving = true;
+
+    this._personService
+      .editPerson(this.person)
+      .pipe(
+        finalize(() => {
+          this.saving = false;
+        })
+      )
+      .subscribe(() => {
+        this.notify.info(this.l('SuccessfullyEdited'));
+        this.close(true);
+      });
   }
 
   close(result: any): void {

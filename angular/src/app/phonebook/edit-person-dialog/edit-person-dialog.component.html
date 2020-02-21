@@ -1,57 +1,88 @@
-<table class="table table-hover table-striped">
-    <thead>
-        <tr>
-            <th></th>
-            <th>{{ "Type" | localize }}</th>
-            <th>{{ "PhoneNumber" | localize }}</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let phone of this.person.phones">
-            <td>
-                <button mat-mini-fab color="warn">
-                    <mat-icon>delete</mat-icon>
+<h1 mat-dialog-title>{{ "EditPerson" | localize }}</h1>
+<mat-dialog-content>
+  <mat-tab-group>
+    <mat-tab [label]="'PersonDetails' | localize">
+      <br />
+      <form autocomplete="off" #editPersonModal="ngForm">
+        <div class="row-fluid">
+          <div class="col-md-4">
+            <mat-form-field>
+              <input matInput name="Name" [placeholder]="'Name' | localize" [(ngModel)]="person.name" required
+                maxlength="32" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <input matInput name="Surname" [placeholder]="'Surname' | localize" [(ngModel)]="person.surname" required
+                maxlength="32" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field>
+              <input matInput name="EmailAddress" [placeholder]="'EmailAddress' | localize"
+                [(ngModel)]="person.emailAddress" type="email" required maxlength="256"
+                pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$" />
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </mat-tab>
+    <mat-tab [label]="'UserPhones' | localize">
+      <br />
+      <div class="row-fluid">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th></th>
+              <th>{{ "Type" | localize }}</th>
+              <th>{{ "PhoneNumber" | localize }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let phone of this.person.phones">
+              <td>
+                <button mat-mini-fab color="warn" type="button" (click)="deletePhone(phone)">
+                  <mat-icon>delete</mat-icon>
                 </button>
-            </td>
-            <td>{{ getPhoneTypeAsString(phone.type) }}</td>
-            <td>{{ phone.number }}</td>
-        </tr>
-        <tr>
-            <td>
-                <button mat-mini-fab color="primary" (click)="savePhone()">
-                    <mat-icon>save</mat-icon>
+              </td>
+              <td>{{ getPhoneTypeAsString(phone.type) }}</td>
+              <td>{{ phone.number }}</td>
+            </tr>
+            <tr>
+              <td>
+                <button mat-mini-fab color="primary" type="button" (click)="savePhone()">
+                  <mat-icon>save</mat-icon>
                 </button>
-            </td>
-            <td>
+              </td>
+              <td>
                 <mat-form-field>
-                    <mat-label>{{ "Type" | localize }}</mat-label>
-                    <mat-select 
-                        [(ngModel)]="newPhone.type" name="Type"
-                        required>
-                        <mat-option *ngFor="let type of values()"  [value]="type">
-                        {{ getPhoneTypeAsString(type) }}
-                        </mat-option>
-                    </mat-select>
-                    </mat-form-field>
-            </td>
-            <td>
+                  <mat-label>{{ "Type" | localize }}</mat-label>
+                  <mat-select [(ngModel)]="newPhone.type" name="Type" required>
+                    <mat-option *ngFor="let type of values()" [value]="type">
+                      {{ getPhoneTypeAsString(type) }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </td>
+              <td>
                 <mat-form-field>
-                    <input
-                        matInput
-                        name="Number"
-                        [placeholder]="'Number' | localize"
-                        [(ngModel)]="newPhone.number"
-                        required
-                        maxlength="10"
-                    />
-                    </mat-form-field>    
-            </td>
-        </tr>
-    </tbody>
-</table>
-
+                  <input matInput name="Number" [placeholder]="'Number' | localize" [(ngModel)]="newPhone.number"
+                    required maxlength="10" />
+                </mat-form-field>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
 <div mat-dialog-actions align="end">
-    <button mat-button type="button" (click)="close(false)">
-      {{ "Cancel" | localize }}
-    </button>
+  <button mat-button type="button" [disabled]="saving" (click)="close(false)">
+    {{ "Cancel" | localize }}
+  </button>
+  <button mat-flat-button type="button" flex="15" color="primary" (click)="editPerson()"
+    [disabled]="!editPersonModal.form.valid || saving">
+    {{ "Edit" | localize }}
+  </button>
 </div>
