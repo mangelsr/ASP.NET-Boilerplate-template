@@ -1,0 +1,61 @@
+<form autocomplete="off" #createPersonModal="ngForm" (ngSubmit)="save()">
+    <h1 mat-dialog-title>{{ "CreateNewPerson" | localize }}</h1>
+    <mat-dialog-content>
+          <div class="row-fluid">
+            <div class="col-md-4">
+              <mat-form-field>
+                <input
+                  matInput
+                  name="Name"
+                  [placeholder]="'Name' | localize"
+                  [(ngModel)]="person.name"
+                  required
+                  maxlength="32"
+                />
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+                <mat-form-field>
+                    <input
+                      matInput
+                      name="Surname"
+                      [placeholder]="'Surname' | localize"
+                      [(ngModel)]="person.surname"
+                      required
+                      maxlength="32"
+                    />
+                  </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field>
+                <input
+                  matInput
+                  name="EmailAddress"
+                  [placeholder]="'EmailAddress' | localize"
+                  [(ngModel)]="person.emailAddress"
+                  type="email"
+                  required
+                  maxlength="256"
+                  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+        
+    </mat-dialog-content>
+    <div mat-dialog-actions align="end">
+      <button mat-button type="button" [disabled]="saving" (click)="close(false)">
+        {{ "Cancel" | localize }}
+      </button>
+      <button
+        mat-flat-button
+        type="submit"
+        flex="15"
+        color="primary"
+        [disabled]="!createPersonModal.form.valid || saving"
+      >
+        {{ "Save" | localize }}
+      </button>
+    </div>
+  </form>
+  

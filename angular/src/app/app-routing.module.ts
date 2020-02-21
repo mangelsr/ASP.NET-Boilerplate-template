@@ -23,7 +23,7 @@ import { PhonebookComponent } from './phonebook/phonebook.component';
                     { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
                     { path: 'about', component: AboutComponent },
                     { path: 'update-password', component: ChangePasswordComponent },
-                    { path: 'phonebook', component: PhonebookComponent, canActivate: [AppRouteGuard] },
+                    { path: 'phonebook', component: PhonebookComponent, data: { permission: 'Pages.PhoneBook' },canActivate: [AppRouteGuard] },
                 ]
             }
         ])

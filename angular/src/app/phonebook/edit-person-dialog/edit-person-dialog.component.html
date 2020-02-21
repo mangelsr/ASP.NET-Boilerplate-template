@@ -1,0 +1,57 @@
+<table class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>{{ "Type" | localize }}</th>
+            <th>{{ "PhoneNumber" | localize }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let phone of this.person.phones">
+            <td>
+                <button mat-mini-fab color="warn">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+            <td>{{ getPhoneTypeAsString(phone.type) }}</td>
+            <td>{{ phone.number }}</td>
+        </tr>
+        <tr>
+            <td>
+                <button mat-mini-fab color="primary" (click)="savePhone()">
+                    <mat-icon>save</mat-icon>
+                </button>
+            </td>
+            <td>
+                <mat-form-field>
+                    <mat-label>{{ "Type" | localize }}</mat-label>
+                    <mat-select 
+                        [(ngModel)]="newPhone.type" name="Type"
+                        required>
+                        <mat-option *ngFor="let type of values()"  [value]="type">
+                        {{ getPhoneTypeAsString(type) }}
+                        </mat-option>
+                    </mat-select>
+                    </mat-form-field>
+            </td>
+            <td>
+                <mat-form-field>
+                    <input
+                        matInput
+                        name="Number"
+                        [placeholder]="'Number' | localize"
+                        [(ngModel)]="newPhone.number"
+                        required
+                        maxlength="10"
+                    />
+                    </mat-form-field>    
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="close(false)">
+      {{ "Cancel" | localize }}
+    </button>
+</div>

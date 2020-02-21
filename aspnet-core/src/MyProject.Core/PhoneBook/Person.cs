@@ -1,9 +1,13 @@
-using Abp.Auditing;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+using Abp.Domain.Entities.Auditing;
 
 namespace MyProject.PhoneBook
 {
     [Table("pbPersons")]
-    public class Person : FullAditedEntity
+    public class Person : FullAuditedEntity
     {
         public const int MaxNameLength = 32;
         public const int MaxSurnameLength = 32;
@@ -22,6 +26,6 @@ namespace MyProject.PhoneBook
         [MaxLength(MaxEmailAddressLength)]
         public virtual string EmailAddress { get; set; }
 
-
+        public virtual ICollection<Phone> Phones { get; set; }
     }
 }
